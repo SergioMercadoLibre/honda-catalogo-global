@@ -3,46 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Honda Global Cataloger Pro v4</title>
+    <title>Honda Catalogador | Precisión 100%</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="importmap">
       { "imports": { "@google/generative-ai": "https://esm.run/@google/generative-ai" } }
     </script>
 </head>
-<body class="bg-slate-900 p-4 md:p-8 font-sans text-slate-200 text-left">
+<body class="bg-gray-100 p-4 md:p-10 font-sans text-gray-800">
 
-    <div class="max-w-5xl mx-auto bg-slate-800 rounded-2xl shadow-2xl border-t-4 border-red-600 overflow-hidden">
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl border-t-4 border-black overflow-hidden">
         
-        <div class="bg-red-600 text-white p-8">
-            <h1 class="text-4xl font-bold uppercase italic tracking-tighter text-left">Honda Part Intel Pro v4</h1>
-            <p class="text-xs opacity-90 font-bold tracking-[0.3em] uppercase mt-2 text-left">Motor de Verificación Técnica y Validación de Diámetros</p>
+        <div class="bg-black text-white p-6">
+            <h1 class="text-3xl font-bold uppercase italic tracking-tighter">Honda Part Intel</h1>
+            <p class="text-xs opacity-90 font-bold tracking-widest uppercase text-red-500">Motor de Temperatura 0.1 (Anti-Alucinación)</p>
         </div>
 
-        <div class="p-8 space-y-8">
+        <div class="p-6 space-y-6">
             
-            <div class="bg-slate-700 p-5 rounded-xl border border-slate-600">
-                <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-widest text-left text-left">Llave API de Google:</label>
-                <input type="password" id="apiKey" placeholder="AIzaSy..." class="w-full bg-slate-900 border border-slate-600 p-3 rounded-lg text-white text-sm focus:border-red-500 outline-none">
+            <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                <label class="block text-xs font-bold text-gray-600 mb-2 uppercase">1. API Key:</label>
+                <input type="password" id="apiKey" placeholder="AIzaSy..." class="w-full p-3 border border-gray-300 rounded focus:border-black outline-none text-sm font-mono">
             </div>
 
-            <div class="text-left">
-                <label class="block text-sm font-bold text-slate-300 mb-3 uppercase italic text-left">Ingresar Código Honda (9 o 11 dígitos):</label>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <input type="text" id="partInput" placeholder="Ej: 51490-KAZ-003" class="flex-1 bg-slate-900 border-2 border-slate-700 p-5 rounded-2xl text-2xl font-bold uppercase tracking-widest text-white focus:border-red-500 transition-all outline-none">
-                    <button id="mainBtn" onclick="procesar()" class="bg-red-600 text-white px-12 py-5 rounded-2xl font-bold text-xl uppercase tracking-tighter italic hover:bg-red-700 transition shadow-xl active:scale-95">
-                        Analizar Repuesto
+            <div>
+                <label class="block text-xs font-bold text-gray-600 mb-2 uppercase">2. Código Original Honda:</label>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="partInput" placeholder="Ej: 51490-KAZ-003 o 51490-MN8" class="flex-1 p-4 border-2 border-gray-300 rounded text-xl font-bold uppercase focus:border-red-600 outline-none">
+                    <button id="mainBtn" onclick="procesar()" class="bg-red-600 text-white px-8 py-4 rounded font-bold uppercase hover:bg-red-700 transition disabled:bg-gray-400">
+                        Generar Ficha
                     </button>
                 </div>
             </div>
 
-            <div id="statusBox" class="hidden p-5 rounded-xl text-sm font-bold text-center border-2"></div>
+            <div id="statusBox" class="hidden p-4 rounded text-sm font-bold text-center border"></div>
 
-            <div id="resultBox" class="hidden animate-in fade-in slide-in-from-bottom duration-700">
-                <div class="flex justify-between items-center mb-3">
-                    <span class="text-xs font-bold text-red-500 uppercase tracking-widest italic text-left">Publicación Profesional Verificada</span>
-                    <button onclick="copiar()" class="text-[10px] bg-slate-600 hover:bg-slate-500 px-4 py-2 rounded-full font-bold uppercase transition text-white">Copiar para Mercado Libre</button>
-                </div>
-                <textarea id="output" rows="30" class="w-full bg-slate-900 border border-slate-700 p-8 rounded-3xl text-sm font-mono text-slate-300 leading-relaxed shadow-2xl focus:outline-none"></textarea>
+            <div id="resultBox" class="hidden">
+                <textarea id="output" rows="25" class="w-full p-5 bg-gray-50 border border-gray-300 rounded font-mono text-sm outline-none shadow-inner leading-relaxed"></textarea>
+                <button onclick="copiar()" class="mt-4 w-full bg-blue-600 text-white py-4 rounded font-bold uppercase hover:bg-blue-800 transition shadow-lg">
+                    📋 Copiar para Mercado Libre
+                </button>
             </div>
         </div>
     </div>
@@ -50,16 +49,16 @@
     <script type="module">
         import { GoogleGenerativeAI } from "@google/generative-ai";
 
-        document.getElementById('apiKey').value = localStorage.getItem('honda_v4_key') || '';
+        document.getElementById('apiKey').value = localStorage.getItem('honda_final_key') || '';
 
         window.procesar = async () => {
             const key = document.getElementById('apiKey').value.trim();
             const part = document.getElementById('partInput').value.trim();
             
             if(!key) return alert("Falta la API Key.");
-            if(part.length < 5) return alert("Código demasiado corto.");
+            if(part.length < 5) return alert("Código inválido.");
 
-            localStorage.setItem('honda_v4_key', key);
+            localStorage.setItem('honda_final_key', key);
 
             const btn = document.getElementById('mainBtn');
             const status = document.getElementById('statusBox');
@@ -68,55 +67,62 @@
 
             btn.disabled = true;
             result.classList.add('hidden');
-            status.classList.remove('hidden', 'bg-red-900/20', 'text-red-400', 'border-red-500/50');
-            status.classList.add('bg-blue-900/20', 'text-blue-400', 'border-blue-500/50');
+            status.classList.remove('hidden', 'bg-red-50', 'text-red-700');
+            status.classList.add('bg-blue-50', 'text-blue-700');
+            status.innerText = "Procesando...";
             
             try {
-                status.innerText = "Validando motor de inteligencia artificial...";
-                
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
                 const data = await response.json();
+                if (data.error) throw new Error(data.error.message);
+
                 const validModels = data.models.filter(m => m.supportedGenerationMethods.includes("generateContent") && m.name.includes("gemini"));
                 const selectedModel = validModels.find(m => m.name.includes("flash")) || validModels[0];
                 const cleanModelName = selectedModel.name.replace('models/', '');
 
-                status.innerText = "Ejecutando protocolo de validación de dimensiones y compatibilidad...";
-
                 const genAI = new GoogleGenerativeAI(key);
-                const model = genAI.getGenerativeModel({ model: cleanModelName });
                 
-                const prompt = `ERES UN INGENIERO SENIOR DE REPUESTOS HONDA. TU MISIÓN ES LA PRECISIÓN ABSOLUTA.
-                CÓDIGO: "${part}". 
+                // AQUÍ ESTÁ LA SOLUCIÓN TÉCNICA: Temperatura casi en 0 para forzar datos reales.
+                const model = genAI.getGenerativeModel({ 
+                    model: cleanModelName,
+                    generationConfig: {
+                        temperature: 0.1, 
+                        topP: 0.8,
+                        topK: 10
+                    }
+                });
+                
+                const prompt = `Actúa como un experto en repuestos OEM de motocicletas. Analiza el código Honda: ${part}.
+                
+                REGLA ABSOLUTA: Prioriza la PRECISIÓN sobre la cantidad. Solo lista datos de los que tengas certeza absoluta. Si no conoces una medida exacta o un modelo, NO LO INVENTES.
+                
+                1. Completa el código original si tiene menos de 10 dígitos.
+                2. Identifica si hay un reemplazo oficial (Supersession).
+                3. Lista los modelos compatibles. Los años DEBEN usar guiones (ej: 2000-2015), nunca comas.
+                4. Identifica reemplazos físicos (otras piezas Honda con las mismas medidas) y compatibilidad con otras marcas si tienes certeza del dato.
 
-                PASOS OBLIGATORIOS ANTES DE RESPONDER:
-                1. IDENTIFICA LA PIEZA: Determina exactamente qué es (Kit de retenes, tornillo, tapón, etc.).
-                2. DETERMINA DIÁMETRO: Si es un retén, identifica el diámetro del barral (Ej: KAZ=37mm, MN8=41mm, MJP/MY9=43mm). 
-                3. FILTRO CRÍTICO: SOLO puedes listar motos que usen EXACTAMENTE ese diámetro. Está TERMINANTEMENTE PROHIBIDO listar una XR 600 (43mm) si el código es KAZ (37mm).
-                4. FORMATEO: Años con guion (Ej: 2000-2015). Bloques PARA/AÑOS individuales.
-
-                ESTRUCTURA DE RESPUESTA REQUERIDA (NO AGREGAR INTRODUCCIONES):
+                DEVUELVE EXCLUSIVAMENTE ESTE FORMATO:
                 [NOMBRE DEL ARTÍCULO EN MAYÚSCULAS]
-                [MODELOS MÁS COMERCIALES PARA ARG/BRA]
-                [DETALLE DEL CONTENIDO] - CALIDAD ORIGINAL HONDA
+                [MODELOS COMERCIALES ARG/BRA]
+                [DETALLE DEL CONTENIDO] - ORIGINAL HONDA
                 HONDA ORIGINAL
 
-                --- DATOS TÉCNICOS VERIFICADOS ---
-                CÓDIGO ORIGINAL: [Completar a 11 dígitos]
-                MEDIDAS FÍSICAS: [Interior x Exterior x Altura] (Ej: 37x50x11mm).
-                DIÁMETRO DE BARRAL: [Ej: 37mm]
+                --- DATOS DE LA PIEZA ---
+                CÓDIGO: [Código completo]
+                MEDIDAS: [Solo si aplica, ej: 37x50x11mm]
+                REEMPLAZO OFICIAL: [Código nuevo o "No registra"]
 
-                --- COMPATIBILIDAD HONDA (SOLO MOTOS QUE USAN ESTE DIÁMETRO) ---
-                PARA: [Modelo]
-                AÑOS: [Rango inicial]-[Rango final]
-                (Listar todas las motos de manual sin errores)
+                --- APLICACIÓN HONDA ---
+                PARA: [Modelo verificado]
+                AÑOS: [Año]-[Año]
+                (Repetir para los modelos comprobados)
 
                 --- REEMPLAZOS FÍSICOS HONDA ---
-                (Otros códigos de Honda con las mismas medidas exactas)
-                CÓDIGO: [Código] | MEDIDAS: [Confirmar]
+                [Código] | [Medida] | [Modelo de origen]
 
-                --- COMPATIBILIDAD OTRAS MARCAS (MISMA MEDIDA FÍSICA) ---
+                --- COMPATIBILIDAD OTRAS MARCAS ---
                 MARCA: [Marca] | MODELO: [Modelo] | AÑOS: [Rango]
-                CÓDIGO OEM: [Código]`;
+                CÓDIGO OEM: [Código de la otra marca si se conoce]`;
 
                 const res = await model.generateContent(prompt);
                 output.value = res.response.text();
@@ -124,19 +130,19 @@
                 result.classList.remove('hidden');
 
             } catch (err) {
-                status.classList.remove('bg-blue-900/20', 'text-blue-400', 'border-blue-500/50');
-                status.classList.add('bg-red-900/20', 'text-red-400', 'border-red-500/50');
-                status.innerHTML = "<b>Falla Crítica:</b> " + err.message;
+                status.classList.remove('bg-blue-50', 'text-blue-700');
+                status.classList.add('bg-red-50', 'text-red-700');
+                status.innerHTML = "<b>Error:</b> " + err.message;
             } finally {
                 btn.disabled = false;
             }
         };
 
-        window.copyToClipboard = () => {
+        window.copiar = () => {
             const out = document.getElementById("output");
             out.select();
             document.execCommand("copy");
-            alert("Publicación copiada al portapapeles.");
+            alert("¡Copiado!");
         };
     </script>
 </body>
